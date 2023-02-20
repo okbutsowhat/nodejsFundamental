@@ -10,8 +10,9 @@
 // console.log(process.argv)
 
 const chalk = require('chalk')
+const { argv } = require('yargs')
 const yargs = require('yargs')
-const getNotes = require('./notes.js')
+const notes = require('./notes.js')
 
 const command = process.argv[2]
 
@@ -32,7 +33,8 @@ yargs.command({
     }
   },
   handler: function (argv) {
-    console.log('title:' + argv.title, 'body:' + argv.body);
+    // console.log('title:' + argv.title, 'body:' + argv.body);
+    notes.addNote(argv.title, argv.body)
   }
 })
 
@@ -41,7 +43,8 @@ yargs.command({
   command: 'remove',
   describe: 'Remove a note',
   handler: function () {
-    console.log('Removing the note');
+    // console.log('Removing the note');
+    notes.removeNote(argv.title)
   }
 })
 
