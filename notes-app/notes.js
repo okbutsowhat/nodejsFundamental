@@ -15,7 +15,7 @@ const addNote = function (title, body) {
   if (duplicateNote.length === 0) {
     notes.push({
       title,
-      body
+      body,
     })
     saveNotes(notes)
     console.log(chalk.green.inverse.bold('note added!'))
