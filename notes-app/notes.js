@@ -2,17 +2,40 @@ const fs = require('fs')
 const chalk = require('chalk')
 const { log } = require('console')
 
-const getNotes = function () {
-  return ''
+const getNotes = () => {
+  // const notes = loadNotes()
+  console.log(chalk.green.bold.inverse('Your notes:'))
+  // notes.forEach(note => {
+  //   console.log(chalk.blue.inverse(note.title))
+  // })
 }
 
-const addNote = function (title, body) {
+const listNotes = () => {
   const notes = loadNotes()
-  const duplicateNote = notes.filter((note) => {
-    return note.title === title
+  console.log(chalk.green.bold.inverse('Your notes:'))
+  notes.forEach(note => {
+    console.log(chalk.blue.inverse(note.title))
   })
+}
 
-  if (duplicateNote.length === 0) {
+const readNote = (title) => {
+  const notes = loadNotes()
+  const note = notes.find(note => note.title === title)
+  if (note) {
+    console.log(chalk.green.inverse('title:'), note.title);
+    console.log(chalk.green.inverse('body:'), note.body);
+  } else {
+    console.log(chalk.red.inverse('no note found'));
+  }
+}
+
+const addNote = (title, body) => {
+  const notes = loadNotes()
+  const duplicateNote = notes.find((note) => note.title === title)
+
+  debugger
+
+  if (!duplicateNote) {
     notes.push({
       title,
       body,
@@ -24,12 +47,12 @@ const addNote = function (title, body) {
   }
 }
 
-const saveNotes = function (notes) {
+const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes)
-  fs.writeFileSync('notes.json', dataJSON)
+  fs.writeFileSync('notes.json', dataJsON)
 }
 
-const loadNotes = function () {
+const loadNotes = () => {
   try {
     const dataBuffer = fs.readFileSync('notes.json')
     const dataJSON = dataBuffer.toString()
@@ -39,7 +62,7 @@ const loadNotes = function () {
   }
 }
 
-const removeNote = function (title) {
+const removeNote = (title) => {
   const notes = loadNotes()
   // const deletedNotesName = []
   const filterNotes = notes.filter(note => {
@@ -51,7 +74,7 @@ const removeNote = function (title) {
       return false
     }
   })
-  
+
   if (notes.length === filterNotes.length) {
     console.log(chalk.yellow.inverse.bold(`There is no note titled ${title}`))
   } else {
@@ -70,8 +93,13 @@ const removeNote = function (title) {
   // }
 }
 
+// node inspect .\app.js add --title="test" --body="test"
+// 使用 inspect 命令进入 chrome 输入 chrome://inspect 进入调试
+
 module.exports = {
-  getNotes,
+  // getNotes,
   addNote,
-  removeNote
+  removeNote,
+  listNotes,
+  readNote
 }
